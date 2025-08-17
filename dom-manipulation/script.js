@@ -143,9 +143,9 @@ async function syncQuotes(newQuote = null) {
 
       console.log("Quote synced:", newQuote);
 
-      // ✅ Show UI notification for sync success
+      // Show UI notification for sync success
       const notification = document.getElementById("notification");
-      notification.innerText = "✅ Quotes synced with server!";
+      notification.innerText = " Quotes synced with server!";
       setTimeout(() => (notification.innerText = ""), 4000);
 
     } catch (err) {
