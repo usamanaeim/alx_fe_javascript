@@ -1,4 +1,3 @@
-
 // Mock API URL (JSONPlaceholder or any mock endpoint)
 const API_URL = "https://jsonplaceholder.typicode.com/posts";
 
@@ -114,7 +113,7 @@ function importFromJsonFile(event) {
   fileReader.readAsText(event.target.files[0]);
 }
 
-//  Fetch quotes from server (mock GET)
+// Fetch quotes from server (mock GET)
 async function fetchQuotesFromServer() {
   try {
     const response = await fetch(API_URL);
@@ -133,16 +132,22 @@ async function fetchQuotesFromServer() {
 }
 
 // Sync quotes with server (POST new ones)
-// Sync quotes with server (POST new ones)
 async function syncQuotes(newQuote = null) {
   if (newQuote) {
     try {
       await fetch(API_URL, {
         method: "POST",
         body: JSON.stringify(newQuote),
-        headers: { "Content-Type": "application/json; charset=UTF-8" }  // ✅ fixed "Content-Type"
+        headers: { "Content-Type": "application/json; charset=UTF-8" }
       });
+
       console.log("Quote synced:", newQuote);
+
+      // ✅ Show UI notification for sync success
+      const notification = document.getElementById("notification");
+      notification.innerText = "✅ Quotes synced with server!";
+      setTimeout(() => (notification.innerText = ""), 4000);
+
     } catch (err) {
       console.error("Error posting to server:", err);
     }
@@ -152,7 +157,7 @@ async function syncQuotes(newQuote = null) {
   fetchQuotesFromServer();
 }
 
-//  Handle server data with conflict resolution
+// Handle server data with conflict resolution
 function handleServerData(serverQuotes) {
   let conflict = false;
 
@@ -167,13 +172,13 @@ function handleServerData(serverQuotes) {
   if (conflict) {
     saveQuotes();
     populateCategories();
-    document.getElementById("notification").innerText =
-      "⚠️ New quotes fetched from server. Local storage updated.";
-    setTimeout(() => (document.getElementById("notification").innerText = ""), 4000);
+    const notification = document.getElementById("notification");
+    notification.innerText = "⚠️ New quotes fetched from server. Local storage updated.";
+    setTimeout(() => (notification.innerText = ""), 4000);
   }
 }
 
-//  Periodic sync every 30 seconds
+// Periodic sync every 30 seconds
 setInterval(fetchQuotesFromServer, 30000);
 
 // --- Initialize ---
